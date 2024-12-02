@@ -4,17 +4,26 @@ import { stripObjectName } from "@/helpers/strip-object-name";
 import { StoredFile } from "@/store/files";
 import { Folder } from "@/store/folders";
 
-export const fgaClient = new OpenFgaClient({
-  apiUrl: process.env.FGA_API_URL,
-  storeId: process.env.FGA_STORE_ID,
-  authorizationModelId: process.env.FGA_AUTHORIZATION_MODEL_ID,
-  credentials: {
-    method: CredentialsMethod.ApiToken,
-    config: {
-        token: process.env.OPENFGA_AUTHN_PRESHARED_KEY as string
-    },
-  },
-});
+function OpenFgaClientConfig() {
+  let config = {
+    apiUrl: process.env.FGA_API_URL,
+    storeId: process.env.FGA_STORE_ID,
+    authorizationModelId: process.env.FGA_AUTHORIZATION_MODEL_ID,
+  }
+
+  if (process.env.OPENFGA_AUTHN_PRESHARED_KEY) {
+    config.credentials = {
+      method: CredentialsMethod.ApiToken,
+      config: {
+          token: process.env.OPENFGA_AUTHN_PRESHARED_KEY as string
+      },
+    }
+  }
+
+  return config
+}
+
+export const fgaClient = new OpenFgaClient(OpenFgaClientConfig());
 
 export async function authorizeRootFolder(userId: string): Promise<void> {
   const { allowed } = await fgaClient.check({

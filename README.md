@@ -100,7 +100,7 @@ FGA_AUTHORIZATION_MODEL_ID=
 # The FGA token issuer
 FGA_API_TOKEN_ISSUER='http://localhost:8080'
 # The API audience
-FGA_API_AUDIENCE='https://localhost:8080'
+FGA_API_AUDIENCE='http://localhost:8080'
 # Pre-shared Key for OpenFGA Server's authentication
 OPENFGA_AUTHN_PRESHARED_KEY=
 ```
